@@ -30,27 +30,17 @@ def setup_config(cfg_name: str):
 
     
     # This import must be postponed after init_db has been called
-    # from controller.post_controller import PostResource, PostListResource, ProfileResource, LikeResource, DislikeResource, FavoriteResource, CommentResource, FavoriteListResource
-    # api.add_resource(PostResource, '/api/<post_id>')
-    # api.add_resource(PostListResource, '/api')
-    # api.add_resource(ProfileResource, '/api/profile/<user_id>')
-    # api.add_resource(LikeResource, '/api/like/<post_id>')
-    # api.add_resource(DislikeResource, '/api/dislike/<post_id>')
-    # api.add_resource(FavoriteResource, '/api/favorite/<post_id>')
-    # api.add_resource(FavoriteListResource, '/api/favorite')
-    # api.add_resource(CommentResource, '/api/comment/<post_id>')
+    from controller.campaign_controller import CampaignResource, PostCampaignResource, UserResource
+    api.add_resource(CampaignResource, '/api/<campaign_id>')
+    api.add_resource(PostCampaignResource, '/api')
+    api.add_resource(UserResource, '/api/<user_id>')
 
 
     # This import must be postponed after init_db has been called
-    # from models.models import Block, Comment, Favorite, Follow, Like, Post, Tagged, User
-    # if cfg_name == 'test':
-    #     Block.query.delete()
-    #     Comment.query.delete()
-    #     Favorite.query.delete()
-    #     Follow.query.delete()
-    #     Like.query.delete()
-    #     Tagged.query.delete()
-    #     Post.query.delete()
-    #     User.query.delete()
+    from models.models import Campaign, CampaignActivation, User
+    if cfg_name == 'test':
+        Campaign.query.delete()
+        CampaignActivation.query.delete()
+        User.query.delete()
 
     return app
