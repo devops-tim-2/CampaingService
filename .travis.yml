@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install -r requirements.txt
+addons:
+  sonarcloud:
+    organization: "devops-tim-2"
+    token:
+      secure: "r6fb4HYmZ5tlWhuEXlz3+57MdKipnT+rf19JrqmaX37VIDJRUs0zUIBccR+t284/MmXhfew7jq0Gls75+tqdj2fBW/HyCVKlvfkyBPp55Dzw//OSwMN/4+USjcj14Z0G3bmLSX4k3fsGY7WzqnLdxortKQI9yS2F1Fzc2avPIHn7qkhUfBqvisfpHqrsG3cWp3txYsbqhq8wcHdhq6HTL2mZ1aTzWlNPODpNErXsClEUaF0je5mwubpQgi9rxLM8XB3uh41D+iL8a8PQ5u7CMXnKsPzfYiLr4kdAHCkq5sCLrbUx/yXiMftm3iK38/LZ48vYKgFFG7KCScmMpJsLUnKY6EkVR9+tpNwxcOwdHuyf37oYr68e6TUxgtMvydixBGp0p9Jep3TDsIRtHjD9Yy8SJn/99TvRT/XpVOZtPftjeksAeyzql3eI5NYIZkWK/8b64osEKzUidCMP+buEiJDk003pzJSbuR5OPT7ySf3bCLrZsTubbTVx9xZqLD6MuxMHL22t70zYXvjngD5Sg1tC6VCsDKIiHkiIB9meIkD8fJt20H/ia0D8ln2KkwToYDFZdZPpFNv5ZV0lyqU6P+2MHHs8+m75WZuQoUSCmlxTwRZ7BNAkecxloBxFpHYxLjegIz8kXle/IvIjZffzA35waoINiZy+dOd61Un6crM="
+script:
+  # - pytest
+  - sonar-scanner
+branches:
+  only:
+    - main
+    - develop
