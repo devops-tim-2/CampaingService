@@ -33,7 +33,7 @@ def setup_config(cfg_name: str):
     from controller.campaign_controller import CampaignResource, PostCampaignResource, UserResource
     api.add_resource(CampaignResource, '/api/<campaign_id>')
     api.add_resource(PostCampaignResource, '/api')
-    api.add_resource(UserResource, '/api/<user_id>')
+    api.add_resource(UserResource, '/api/profile/<user_id>')
 
 
     # This import must be postponed after init_db has been called
