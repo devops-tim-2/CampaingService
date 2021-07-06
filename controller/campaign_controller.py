@@ -23,8 +23,15 @@ class CampaignResource(Resource):
  
     def get(self, campaign_id):        
         try:
-            # campaign_service.get(campaign_id), 200
-            pass
+            if not request.headers.has_key('Authorization'):
+                return 'Forbidden, unauthorized atempt.', 403
+            else:
+                token = request.headers['Authorization'].split(' ')[1]
+                auth(token)
+
+                return campaign_service.get(campaign_id), 200
+        except InvalidAuthException as e:
+            return str(e), 401
         except NotFoundException as e:
             return str(e), 404
 

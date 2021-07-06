@@ -17,6 +17,10 @@ class TestCampaign:
         db_session.add(cls.user1)
         db_session.commit()
 
+        cls.campaign = Campaign(description='some nice description2', image_url='some nice image url2', interests='some nice interests2', age_min=15, age_max=25, regions='Futog', sex='female', user_id=cls.user1.id)
+        db_session.add(cls.campaign)
+        db_session.commit()
+
         user1_data = dict(id=cls.user1.id)
 
         cls.token_user1 = generate_token(user1_data)
@@ -59,3 +63,15 @@ class TestCampaign:
 
         assert campaign_count_after == campaign_count_before
         assert campaign_activation_count_after == campaign_activation_count_before
+
+
+    def test_get_happy(cls):
+        create_response = cls.client.get(f'/api/{cls.campaign.id}', headers={'Authorization': f'Bearer {cls.token_user1}'}).get_json()
+
+        assert create_response['id'] == cls.campaign.id
+
+
+    def test_get_sad(cls):
+        create_response = cls.client.get(f'/api/{-1}', headers={'Authorization': f'Bearer {cls.token_user1}'})
+        
+        assert create_response.status_code == 404
