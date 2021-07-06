@@ -12,3 +12,7 @@ def save(campaign: Campaign):
 def delete(campaign_id: int):
     Campaign.query.filter_by(id=campaign_id).delete()
     db_session.commit()
+
+
+def get(campaign_id: int) -> Campaign:
+    return Campaign.query.get(campaign_id)

@@ -1,4 +1,4 @@
-from exception.exceptions import InvalidDataException
+from exception.exceptions import InvalidDataException, NotFoundException
 from models.models import Campaign, CampaignActivation
 from common.utils import check
 from repository import campaign_repository
@@ -23,5 +23,14 @@ def create(campaign_data: dict, user: dict) -> dict:
         campaign_activation_service.save(campaign_activation)
 
     publish('campaign.created', campaign.get_dict())
+
+    return campaign.get_dict()
+
+
+def get(campaign_id: int) -> dict:
+    campaign = campaign_repository.get(campaign_id)
+
+    if not campaign:
+        raise NotFoundException(f'Campaign with id {campaign_id} not found.')
 
     return campaign.get_dict()
