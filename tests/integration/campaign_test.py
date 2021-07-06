@@ -4,7 +4,7 @@ environ['SQLALCHEMY_DATABASE_URI'] = environ.get("TEST_DATABASE_URI")
 from models.models import Campaign, CampaignActivation, User
 from common.config import setup_config
 from common.utils import generate_token
-import json, pytest
+import json
 
 
 class TestCampaign:
