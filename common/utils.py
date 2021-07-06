@@ -22,8 +22,8 @@ def auth(token: str):
     return payload
 
 
-# def generate_token(user: dict):
-#     user["iat"] = round(time.time() * 1000)
-#     user["exp"] = round(time.time() * 1000) + 3600000 * 24 * 365 #1 year from now
-#     encoded_jwt = jwt.encode(user, environ.get('JWT_SECRET'), algorithm=environ.get('JWT_ALGORITHM'))
-#     return encoded_jwt
+def generate_token(user: dict):
+    user["iat"] = round(time.time() * 1000)
+    user["exp"] = round(time.time() * 1000) + 3600000 * 24 * 365 #1 year from now
+    encoded_jwt = jwt.encode(user, environ.get('JWT_SECRET'), algorithm=environ.get('JWT_ALGORITHM'))
+    return encoded_jwt
