@@ -85,3 +85,26 @@ def test_get_not_found(mocker):
 
     with pytest.raises(NotFoundException):
         campaign_service.get(1)
+
+
+def test_get_all_ok(mocker):
+    user = {
+        "id": 1
+    }
+
+    expected = [Campaign(id=1, description='some nice description3', image_url='some nice image url3', interests='some nice interests3', age_min=15, age_max=25, regions='Novi Sad', sex='male', user_id=user['id'])]
+
+    mocker.patch('service.campaign_service.user_service.get', return_value=user)
+    mocker.patch('service.campaign_service.campaign_repository.get_with_user', return_value=expected)
+
+    actual = campaign_service.get_with_user(user['id'], 1, 5)
+
+    assert len(expected) == len(actual)
+    assert all(campaign['user_id'] == user['id'] for campaign in actual)
+
+
+def test_get_all_agent_not_found(mocker):
+    mocker.patch('service.campaign_service.user_service.get', return_value=None)
+
+    with pytest.raises(NotFoundException):
+        campaign_service.get_with_user(1, 1, 5)

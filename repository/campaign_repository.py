@@ -16,3 +16,7 @@ def delete(campaign_id: int):
 
 def get(campaign_id: int) -> Campaign:
     return Campaign.query.get(campaign_id)
+
+
+def get_with_user(user_id: int):
+    return Campaign.query.filter_by(user_id=user_id).order_by(Campaign.id.desc()).all()
