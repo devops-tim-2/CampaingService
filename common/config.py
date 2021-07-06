@@ -45,16 +45,16 @@ def setup_config(cfg_name: str):
         CampaignActivation.query.delete()
         Campaign.query.delete()
         User.query.delete()
-    else:
-        global global_scheduler
-        global_scheduler = BackgroundScheduler()
+    
+    global global_scheduler
+    global_scheduler = BackgroundScheduler()
 
-        campaign_activations = CampaignActivation.query.all()
+    campaign_activations = CampaignActivation.query.all()
 
-        for campaign_activation in campaign_activations:
-            if datetime.now() < datetime.fromtimestamp(campaign_activation.time/1000.0):
-                global_scheduler.add_job(publish, run_date=datetime.fromtimestamp(campaign_activation.time/1000.0), id=str(campaign_activation.id), kwargs={'method': 'campaign.published', 'body': campaign_activation.get_dict()})
+    for campaign_activation in campaign_activations:
+        if datetime.now() < datetime.fromtimestamp(campaign_activation.time/1000.0):
+            global_scheduler.add_job(publish, run_date=datetime.fromtimestamp(campaign_activation.time/1000.0), id=str(campaign_activation.id), kwargs={'method': 'campaign.published', 'body': campaign_activation.get_dict()})
 
-        global_scheduler.start()
+    global_scheduler.start()
 
     return app
