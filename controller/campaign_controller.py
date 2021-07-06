@@ -13,7 +13,7 @@ campaign_parser.add_argument('age_min', type=int, help='Min. age for campaign')
 campaign_parser.add_argument('age_max', type=int, help='Max. age for campaign')
 campaign_parser.add_argument('regions', type=str, help='Regions for campaign')
 campaign_parser.add_argument('sex', type=str, help='Sex for age')
-campaign_parser.add_argument('times', type=list, help='Activation times for campaign')
+campaign_parser.add_argument('times', type=list, location='json', help='Activation times for campaign')
 
  
 class CampaignResource(Resource):

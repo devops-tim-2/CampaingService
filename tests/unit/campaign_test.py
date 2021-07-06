@@ -19,12 +19,12 @@ def test_create_ok(mocker):
         "regions": 'Novi Sad',
         "sex": 'male',
         "user_id": user_data['id'],
-        "times": [1625522666651, 1625522675204, 1625522681373]
+        "times": [1628244000000, 1628330400000, 1628416800000]
     }
 
     # user_service.add(user_data)
     expected = Campaign(id=campaign_data['id'], description=campaign_data['description'], image_url=campaign_data['image_url'], interests=campaign_data['interests'], age_min=campaign_data['age_min'], age_max=campaign_data['age_max'], regions=campaign_data['regions'], sex=campaign_data['sex'], user_id=user_data['id'])
-    campaign_activation = CampaignActivation(id=1, time=1625522666651, campaign_id=campaign_data['id'])
+    campaign_activation = CampaignActivation(id=1, time=1628244000000, campaign_id=campaign_data['id'])
     
     mocker.patch('service.campaign_service.campaign_repository.save', return_value=expected)
     mocker.patch('service.campaign_service.campaign_activation_service.save', return_value=campaign_activation)
@@ -48,7 +48,7 @@ def test_create_missing_param():
         "regions": 'Novi Sad',
         "sex": 'male',
         "user_id": user_data['id'],
-        "times": [1625522666651, 1625522675204, 1625522681373]
+        "times": [1628244000000, 1628330400000, 1628416800000]
     }
 
     with pytest.raises(InvalidDataException):
