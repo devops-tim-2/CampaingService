@@ -5,7 +5,7 @@ from repository import campaign_repository
 from service import campaign_activation_service, user_service
 from broker.producer import publish
 from datetime import datetime
-from apscheduler.schedulers.background import BackgroundScheduler
+from common import config
 
 
 def create(campaign_data: dict, user: dict) -> dict:
@@ -20,16 +20,13 @@ def create(campaign_data: dict, user: dict) -> dict:
 
     campaign = Campaign(description=campaign_data['description'], image_url=campaign_data['image_url'], interests=campaign_data['interests'], age_min=campaign_data['age_min'], age_max=campaign_data['age_max'], regions=campaign_data['regions'], sex=campaign_data['sex'], user_id=user['id'])
     campaign = campaign_repository.save(campaign)
-
-    sched = BackgroundScheduler()
     
     for time in campaign_data['times']:
         campaign_activation = CampaignActivation(time=time/1000.0, campaign_id=campaign.id)
-        campaign_activation_service.save(campaign_activation)
-        sched.add_job(publish, run_date=datetime.fromtimestamp(time/1000.0), kwargs={'method': 'campaign.published', 'body': campaign_activation.get_dict()})
+        campaign_activation = campaign_activation_service.save(campaign_activation)
+        config.global_scheduler.add_job(publish, run_date=datetime.fromtimestamp(time/1000.0), id=str(campaign_activation.id), kwargs={'method': 'campaign.published', 'body': campaign_activation.get_dict()})
         
     publish('campaign.created', campaign.get_dict())
-    sched.start()
     
     return campaign.get_dict()
 
