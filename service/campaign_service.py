@@ -1,4 +1,4 @@
-from exception.exceptions import InvalidDataException, NotFoundException
+from exception.exceptions import InvalidAuthException, InvalidDataException, NotFoundException
 from models.models import Campaign, CampaignActivation
 from common.utils import check
 from repository import campaign_repository
@@ -15,7 +15,7 @@ def create(campaign_data: dict, user: dict) -> dict:
     elif campaign_data['age_min'] < 0 or campaign_data['age_min'] > campaign_data['age_max']:
         raise InvalidDataException('Invalid value for min. age or max. age.')
     elif not user_service.get(user['id']):
-        raise NotFoundException('Your are not allowed to create new campaign.')
+        raise InvalidAuthException('Your are not allowed to create new campaign.')
 
     campaign = Campaign(description=campaign_data['description'], image_url=campaign_data['image_url'], interests=campaign_data['interests'], age_min=campaign_data['age_min'], age_max=campaign_data['age_max'], regions=campaign_data['regions'], sex=campaign_data['sex'], user_id=user['id'])
     campaign = campaign_repository.save(campaign)
