@@ -12,3 +12,7 @@ def save(user: User):
 def delete(user_id: int):
     User.query.filter_by(id=user_id).delete()
     db_session.commit()
+
+
+def get(user_id: int) -> User:
+    return User.query.get(user_id)

@@ -75,3 +75,15 @@ class TestCampaign:
         create_response = cls.client.get(f'/api/{-1}', headers={'Authorization': f'Bearer {cls.token_user1}'})
         
         assert create_response.status_code == 404
+
+
+    def test_get_agent_posts_happy(cls):
+        get_response = cls.client.get(f'/api/profile/{cls.user1.id}?page=1&per_page=1', headers={'Authorization': f'Bearer {cls.token_user1}'}).get_json()
+        
+        assert len(get_response) == 1
+
+
+    def test_get_agent_posts_sad(cls):
+        get_response = cls.client.get(f'/api/profile/{2}', headers={'Authorization': f'Bearer {cls.token_user1}'})
+        
+        assert get_response.status_code == 404

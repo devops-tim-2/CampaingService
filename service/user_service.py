@@ -14,3 +14,9 @@ def delete(user_id: int):
     user_repository.delete(user_id)
 
     return True
+
+
+def get(user_id: int):
+    user = user_repository.get(user_id)
+
+    return user.get_dict() if user else user

@@ -63,5 +63,14 @@ class UserResource(Resource):
         page = int(request.args.get('page')) if request.args.get('page') else 1
         per_page = int(request.args.get('per_page')) if request.args.get('per_page') else 10
 
-        # return campaign_service.get_with_user(user_id, page, per_page), 200
+        try:
+            if not request.headers.has_key('Authorization'):
+                return 'Forbidden, unauthorized atempt.', 403
+            else:
+                token = request.headers['Authorization'].split(' ')[1]
+                auth(token)
+                
+                return campaign_service.get_with_user(user_id, page, per_page), 200
+        except NotFoundException as e:
+            return str(e), 404
  
