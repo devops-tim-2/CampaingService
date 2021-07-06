@@ -1,4 +1,4 @@
-# from broker.consumer import AdminConsumer, UserConsumer
+from broker.consumer import UserConsumer
 import pika
 from os import environ
 
@@ -6,11 +6,9 @@ params = pika.URLParameters(environ.get('RABBITMQ_URI'))
 connection = pika.BlockingConnection(params)
 channel = connection.channel()
 
-# user_queue = UserConsumer(channel)
-# admin_queue = AdminConsumer(channel)
+user_queue = UserConsumer(channel)
 
-# print(f'Started user_queue: {type(user_queue)}')
-# print(f'Started admin_queue: {type(admin_queue)}')
+print(f'Started user_queue: {type(user_queue)}')
 
 channel.start_consuming()
 channel.close()

@@ -2,7 +2,7 @@ from exception.exceptions import InvalidAuthException, InvalidDataException, Not
 from flask_restful import Resource, reqparse
 from flask import request
 from common.utils import auth
-# from service import campaign_service
+from service import campaign_service
 
 campaign_parser = reqparse.RequestParser()
 campaign_parser.add_argument('Authorization', type=str, location='headers', required=True)
@@ -13,6 +13,7 @@ campaign_parser.add_argument('age_min', type=int, help='Min. age for campaign')
 campaign_parser.add_argument('age_max', type=int, help='Max. age for campaign')
 campaign_parser.add_argument('regions', type=str, help='Regions for campaign')
 campaign_parser.add_argument('sex', type=str, help='Sex for age')
+campaign_parser.add_argument('times', type=list, location='json', help='Activation times for campaign')
 
  
 class CampaignResource(Resource):
@@ -40,7 +41,7 @@ class PostCampaignResource(Resource):
         try:
             user = auth(token)
 
-            # return campaign_service.create(args, user), 200
+            return campaign_service.create(args, user), 200
         except InvalidAuthException as e:
             return str(e), 401
         except InvalidDataException as e:
