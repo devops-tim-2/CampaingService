@@ -47,3 +47,27 @@ def get_with_user(user_id: int, page: int, per_page: int) -> list:
     campaigns = campaign_repository.get_with_user(user_id)
 
     return [campaign.get_dict() for campaign in campaigns][(page-1)*per_page : page*per_page]
+
+
+def delete(campaign_id: int, user: dict) -> bool:
+    campaign = campaign_repository.get(campaign_id)
+    user = user_service.get(user['id'])
+
+    if not campaign:
+        raise NotFoundException(f'Campaign with id {campaign_id} not found.')
+    elif not user:
+        raise InvalidAuthException('Your are not allowed to delete campaigns.')
+    elif campaign.user_id != user['id']:
+        raise InvalidDataException('You can\'t delete someone else\'s campaign.')
+
+    campaign_activations = campaign_activation_service.get_with_campaign(campaign_id)
+
+    for campaign_activation in campaign_activations:
+        config.global_scheduler.remove_job(job_id=str(campaign_activation.id))
+        campaign_activation_service.delete(campaign_activation.id)
+
+    campaign_repository.delete(campaign_id)
+
+    publish('campaign.deleted', campaign_id)
+
+    return True

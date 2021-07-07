@@ -10,7 +10,7 @@ def save(campaign: Campaign):
 
 
 def delete(campaign_id: int):
-    Campaign.query.filter_by(id=campaign_id).delete()
+    Campaign.query.filter_by(id=campaign_id).delete(synchronize_session='fetch')
     db_session.commit()
 
 
