@@ -9,6 +9,6 @@ def publish(method, body):
 
     channel = connection.channel()
 
-    channel.exchange_declare(exchange='post', exchange_type='fanout')
+    channel.exchange_declare(exchange='campaign', exchange_type='fanout')
     properties = pika.BasicProperties(method)
-    channel.basic_publish(exchange='post', routing_key='', body=json.dumps(body), properties=properties)
+    channel.basic_publish(exchange='campaign', routing_key='', body=json.dumps(body), properties=properties)
