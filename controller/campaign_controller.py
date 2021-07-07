@@ -35,6 +35,22 @@ class CampaignResource(Resource):
         except NotFoundException as e:
             return str(e), 404
 
+    def delete(self, campaign_id):
+        try:
+            if not request.headers.has_key('Authorization'):
+                return 'Forbidden, unauthorized atempt.', 403
+            else:
+                token = request.headers['Authorization'].split(' ')[1]
+                user = auth(token)
+
+                return campaign_service.delete(campaign_id, user), 200
+        except InvalidAuthException as e:
+            return str(e), 401
+        except NotFoundException as e:
+            return str(e), 404
+        except InvalidDataException as e:
+            return str(e), 400
+
 class PostCampaignResource(Resource):
     def __init__(self):
         # To be implemented.

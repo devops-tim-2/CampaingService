@@ -87,3 +87,15 @@ class TestCampaign:
         get_response = cls.client.get(f'/api/profile/{2}', headers={'Authorization': f'Bearer {cls.token_user1}'})
         
         assert get_response.status_code == 404
+
+
+    def test_delete_happy(cls):
+        delete_response = cls.client.delete(f'/api/{cls.campaign.id}', headers={'Authorization': f'Bearer {cls.token_user1}'})
+
+        assert Campaign.query.get(cls.campaign.id) == None
+
+
+    def test_delete_sad(cls):
+        delete_response = cls.client.delete(f'/api/{3}', headers={'Authorization': f'Bearer {cls.token_user1}'})
+
+        assert delete_response.status_code == 404
